@@ -346,3 +346,61 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 }); // END DOMContentLoaded
+
+// ========= Join Our Team Form Validation (About Us page) =========
+function validateJoinForm() {
+
+    // DOM access
+    var first  = document.getElementById("first-name").value;
+    var last   = document.getElementById("last-name").value;
+    var dob    = document.getElementById("dob").value;
+    var email  = document.getElementById("email").value;
+    var edu    = document.getElementById("education").value;
+    var skills = document.getElementById("skills").value;
+    var exp    = document.getElementById("experties").value;
+    var photo  = document.getElementById("upload-photo").value;
+
+    //  No empty fields
+    if (first == "" || last == "" || dob == "" || email == "" ||
+        edu == "" || skills == "" || exp == "" || photo == "") {
+
+        alert("Please fill in all required fields.");
+        return false;
+    }
+
+    // name cannot start with number
+    if (/^[0-9]/.test(first) || /^[0-9]/.test(last)) {
+        alert("Name fields cannot start with a number.");
+        return false;
+    }
+
+    //  DOB must be before 2008 
+    var year = parseInt(dob.substring(0, 4));
+    if (year > 2008) {
+        alert("Date of Birth must be before 2008.");
+        return false;
+    }
+
+    // Photo validation using extension 
+    var dot = photo.lastIndexOf(".");
+    if (dot == -1) {
+        alert("Please upload a valid image.");
+        return false;
+    }
+
+    var ext = photo.substring(dot + 1).toLowerCase();
+
+    if (!/(jpg|jpeg|png|gif)$/i.test(ext)) {
+        alert("Photo must be an image (jpg, jpeg, png, gif).");
+        return false;
+    }
+
+    // SUCCESS
+    alert("Thank you " + first + " " + last + "! Your application has been submitted.");
+    return true;
+}
+
+// To cancel the form submisiion
+function clearJoinForm() {
+    document.getElementById("join-us-form").reset();
+}

@@ -6,6 +6,7 @@
 
 <title>Bright Spa</title>
 <link href="style.css" rel="stylesheet"/>
+<script src="script.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -116,41 +117,34 @@
    width:85%;
     margin:50px auto;
      padding:30px;
-   box-shadow:0 3px 10px rgba(0,0,0,0.05);"
-   
-   >
+   box-shadow:0 3px 10px rgba(0,0,0,0.05);">
 
   <div class="form-box" style="padding:60px; width:900px;">
     <h2>Join Our Team</h2>
 
- <form action="#" enctype="multipart/form-data" method="post">
+<form id="join-us-form" action="#" enctype="multipart/form-data" method="post"
+      onsubmit="return validateJoinForm();"> <!-- phase3 --> 
 
 
  <label for="first-name">First Name *</label>
-  <input id="first-name" type="text" required>
+  <input id="first-name" type="text">
 
 <label for="last-name">Last Name *</label>
-<input id="last-name" type="text" required>
+<input id="last-name" type="text">
 
 <label for="dob">Date of Birth *</label>
-<input id="dob" type="date" required>
+<input id="dob" type="date">
 
   <label for="email">Email *</label>
-<input id="email" type="email" placeholder="example@mail.com" required>
+<input id="email" type="email" placeholder="example@mail.com">
 
    <label for="education">Education *</label>
-   <input id="education" type="text" placeholder="e.g. Diploma, Bachelor" required>
+   <input id="education" type="text" placeholder="e.g. Diploma, Bachelor">
 
  <label for="skills">Skills *</label>
-<input id="skills" type="text" placeholder="e.g. Hair Styling, Customer Service" required>
-<label for="expertise">Area of Expertise *</label>
-<select id="expertise" required>
- <option value="">Select…</option>
-   <option>Hair Care</option>
- <option>Nail Care</option>
- <option>Massage &amp; Body Care</option>
-
-      </select>
+<input id="skills" type="text" placeholder="e.g. Hair Styling, Customer Service">
+  <label for="experties">Area of Expertise *</label>
+  <input id="experties" type="text" placeholder="e.g. Hair Curling, Massage Therapy, Nail Art">
 
 <div class="photo-upload">
   <label for="upload-photo" class="photo-box">photo of you 📷</label>
@@ -161,7 +155,7 @@
 <label for="message">Message</label>
   <textarea id="message" placeholder="Write a short message..." rows="4"></textarea>
 
-  <input type="button" value="Cancel">
+  <input type="button" value="Cancel" onclick="clearJoinForm();">
    <input type="submit" value="Submit">
     </form>
   </div>
@@ -182,6 +176,5 @@
 <p>© Bright Spa All rights reserved.</p>
 </div>
 </footer>
-  <script src="script.js"></script>
 </body>
 </html>

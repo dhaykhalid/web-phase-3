@@ -302,6 +302,7 @@ footer {
 /* Scroll style */
 .Previous-items,
 .staff-scroller,
+.favorite-grid, 
 .service-list {
   display: flex;
   overflow: auto;
@@ -312,12 +313,14 @@ footer {
 
 
 .Previous-items::-webkit-scrollbar,
+.favorite-grid::-webkit-scrollbar,
 .service-list::-webkit-scrollbar,
 .staff-scroller::-webkit-scrollbar,
 .staff-list::-webkit-scrollbar  {
   height: 10px;
 }
 .Previous-items::-webkit-scrollbar-thumb,
+.favorite-grid::-webkit-scrollbar-thumb,
 .service-list::-webkit-scrollbar-thumb ,
 .staff-scroller::-webkit-scrollbar-thumb ,
 .staff-list::-webkit-scrollbar-thumb  {
@@ -326,6 +329,7 @@ footer {
 }
 .Previous-items::-webkit-scrollbar-track,
 .service-list::-webkit-scrollbar-track ,
+.favorite-grid::-webkit-scrollbar-track ,
 .staff-scroller::-webkit-scrollbar-track ,
 .staff-list::-webkit-scrollbar-track  {
   background: #f7f0e5;
@@ -333,6 +337,7 @@ footer {
 
 
 .Previous-card,
+.favorite-card ,
 .service-card-Provider ,
 .member
 {
@@ -346,7 +351,7 @@ footer {
   transition: transform 0.2s ease;
 }
 
-.favorite-card {
+/**.favorite-card {
   flex: 1;
   background-color: #FFF8F5;
   border: 2px solid #5C4033;
@@ -355,7 +360,7 @@ footer {
   padding: 15px;
   position: relative;
   transition: transform 0.2s ease;
-}
+}**/
 
 .service-card-Provider img,
 .Previous-card img,
@@ -390,14 +395,14 @@ footer {
 }
 
 /*============= FAVORITE SERVICES =============*/
-
+/*
 .favorite-grid {
   display: flex;                
   justify-content: space-between;
   align-items: flex-start;
   gap: 20px;
   flex-wrap: nowrap;            
-}
+}*/
 
 
 
@@ -825,3 +830,239 @@ textarea  {
 
 /*==================Dark mode=================*/
 
+/* ===== Theme toggle (under header, right side) ===== */
+.home-page .theme-toggle {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 40px 0;   /* space under header */
+}
+
+.theme-label {
+  font-size: 0.9rem;
+  color: #5C4033;
+}
+
+/* toggle switch */
+.theme-switch {
+  position: relative;
+  display: inline-block;
+  width: 56px;
+  height: 28px;
+}
+
+/* hide the real checkbox */
+.theme-switch input {
+  display: none;
+}
+
+/* background of the switch */
+.theme-switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #f7e3dd;          /* light pink */
+  border-radius: 20px;
+  border: 1px solid #B0857B;
+  transition: 0.3s;
+}
+
+/* circle inside */
+.theme-switch .slider:before {
+  content: "";
+  position: absolute;
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  top: 2px;
+  background: #B0857B;          /* brown */
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+/* when checked (ON) */
+.theme-switch input:checked + .slider {
+  background: #5C4033;          /* darker brown */
+}
+
+.theme-switch input:checked + .slider:before {
+  transform: translateX(26px);
+  background: #FBE9E2;          /* lighter pink */
+}
+
+/* ============================
+   🌙 DARK THEME — BROWN STYLE
+   يعمل على كل الصفحات وكل الكونتينرز
+   ============================ */
+
+/* خلفية عامة */
+body.theme-dark,
+body.theme-dark th {
+  background-color: #201916 !important;
+  color: #f8f1ec !important;
+}
+
+/* النصوص */
+body.theme-dark h1,
+body.theme-dark h2,
+body.theme-dark h3,
+body.theme-dark h4,
+body.theme-dark h5,
+body.theme-dark h6,
+body.theme-dark p,
+body.theme-dark span,
+body.theme-dark label,
+body.theme-dark a ,
+body.theme-dark .staff-name
+,body.theme-dark td,
+body.theme-dark .role{
+  color: #f8f1ec !important;
+}
+body.theme-dark ::placeholder{
+  color: #f8f1ec !important;
+}
+
+/* الهيدر */
+body.theme-dark header {
+  background-color: #4a332e !important;
+  border-bottom-color: #d0b4a8 !important;
+}
+
+body.theme-dark nav a {
+  color: #f8f1ec !important;
+}
+
+body.theme-dark nav a.active {
+  border-bottom-color: #f8f1ec !important;
+}
+
+/* جميع الكونتينرز → حتى اللي مدموجة */
+body.theme-dark .profile,
+body.theme-dark .profile-section,
+body.theme-dark .request-section,
+body.theme-dark .evaluate-section,
+body.theme-dark .Previous-container,
+body.theme-dark .favorite-container,
+body.theme-dark .AllServices-container,
+body.theme-dark .ManageStaff-container,
+body.theme-dark .staff-section,
+body.theme-dark .services,
+body.theme-dark .vision,
+body.theme-dark .service-list,
+body.theme-dark .staff-scroller,
+body.theme-dark .member,
+body.theme-dark .join-seq,
+body.theme-dark .AddService-container,
+body.theme-dark .form-box
+ {
+  background-color: #271f1f !important;
+  color: #f8f1ec !important;
+  border-color: #d0b4a8 !important;
+}
+
+body.theme-dark .join-seq,
+body.theme-dark .ManageStaff-seq{
+  background-color: #5a433d !important;
+  color: #f8f1ec !important;
+  border-color: #d0b4a8 !important;
+}
+
+body.theme-dark .profile-table {
+  background-color: #5a433d !important;
+  color: #f8f1ec !important;
+  border-color: #d0b4a8 !important;
+}
+/* جميع الكروت */
+body.theme-dark .service-card,
+body.theme-dark .favorite-card,
+body.theme-dark .Previous-card,
+body.theme-dark .review,
+body.theme-dark .member,
+body.theme-dark .service-card-Provider,
+body.theme-dark .staff-card {
+  background-color: #5a433d !important;
+  color: #f8f1ec !important;
+  border-color: #d0b4a8 !important;
+}
+
+/* الكارد الهوفر */
+body.theme-dark .service-card:hover .info {
+  color: #f8f1ec !important;
+}
+
+body.theme-dark .name a:hover {
+  color: #c59c9c !important;
+}
+/* صور الكروت تبقى بدون تغيير */
+body.theme-dark img {
+  opacity: 0.92;
+}
+
+/* حقول الإدخال */
+body.theme-dark input,
+body.theme-dark textarea,
+body.theme-dark select ,
+body.theme-dark .photo-box {
+  background-color: #6d534c !important;
+  color: #f8f1ec !important;
+  border-color: #d0b4a8 !important;
+}
+
+body.theme-dark .star-rating input:checked ~ label {
+  color: #e0ad2a!important;
+}
+
+body.theme-dark .star-rating label:hover,
+body.theme-dark .star-rating label:hover ~ label{
+  color: #e8b648!important;
+}
+
+/* الأزرار */
+
+body.theme-dark input[type="submit"],
+body.theme-dark input[type="button"],
+body.theme-dark .button {
+  background-color: #d0b4a8 !important;
+  color: #3b2b26 !important;
+}
+
+/* الفوتر */
+body.theme-dark footer {
+  background-color: #4a332e !important;
+  color: #f8f1ec !important;
+}
+
+body.theme-dark footer p,
+body.theme-dark footer h2 {
+  color: #f8f1ec !important;
+}
+
+body.theme-dark .fav {
+    background:transparent !important;
+}
+
+body.theme-dark .breadcrumb li {
+  color: #c7b1a8  !important;
+}
+
+.fav {
+    font-size: 22px;
+    background:transparent;
+    cursor: pointer;
+    color: #444;
+    transition: 0.3s;
+}
+
+.fav-active {
+    color: red;
+    font-size: 24px;
+}
+.req-card p {
+    white-space: pre-wrap; 
+    word-wrap: break-word;
+    line-height: 1.5;
+}

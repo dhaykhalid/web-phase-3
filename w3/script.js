@@ -1,19 +1,16 @@
-// =================== JS for all pages ===================
-// =======================================================
-//  WINDOW ONLOAD 
+/* =======================================================
+   GLOBAL PAGE LOAD (Home Page + Services Filters Only)
+   ======================================================= */
 window.onload = function () {
 
-    // ===================================================
-    // 1) BACK TO TOP BUTTON  (Home Page)
-    var backToTopBtn = document.getElementById("backToTop");
+    /* -------------------------
+       1) BACK TO TOP (Home)
+       ------------------------- */
+    const backToTopBtn = document.getElementById("backToTop");
 
     if (backToTopBtn) {
-
-        
         window.onscroll = function () {
-            if (document.documentElement.scrollTop > 300 ||
-                document.body.scrollTop > 300) {
-
+            if (document.documentElement.scrollTop > 300) {
                 backToTopBtn.style.display = "block";
             } else {
                 backToTopBtn.style.display = "none";
@@ -26,141 +23,326 @@ window.onload = function () {
         };
     }
 
-
-
-    // ===================================================
-    // 2) REAL-TIME CLOCK (Home Page)
-    var clock = document.getElementById("clock");
+    /* -------------------------
+       2) REAL-TIME CLOCK
+       ------------------------- */
+    const clock = document.getElementById("clock");
 
     if (clock) {
-
         function updateClock() {
-            var now = new Date();
-            clock.textContent = now.toLocaleTimeString();
+            clock.textContent = new Date().toLocaleTimeString();
         }
-
         setInterval(updateClock, 1000);
         updateClock();
     }
 
-
-
-
-    // ===================================================
-    // 3) SERVICES PAGE — RANDOM ORDER + SORT + SEARCH
-    var grid = document.getElementById("servicesGrid"); 
+    /* -------------------------
+       3) Services Page Filters
+       ------------------------- */
+    const grid = document.getElementById("servicesGrid");
 
     if (grid) {
+        let nodeList = grid.getElementsByClassName("service-card");
+        let cards = Array.from(nodeList);
 
-        // ---------------------------
-        // Convert HTMLCollection to Array manually 
-        // ---------------------------
-        var nodeList = grid.getElementsByClassName("service-card");
-        var cards = [];
-        for (var i = 0; i < nodeList.length; i++) {
-            cards.push(nodeList[i]);
-        }
-
-        // ---------------------------
-        // Random Shuffle
-        // ---------------------------
         shuffle(cards);
         render(cards, grid);
 
-        // ---------------------------
-        // Sorting
-        // ---------------------------
-        var sortSelect = document.getElementById("sort-services");
+        /* SORT */
+        const sortSelect = document.getElementById("sort-services");
 
         if (sortSelect) {
             sortSelect.onchange = function () {
-                var v = sortSelect.value;
+                const v = sortSelect.value;
 
                 if (v === "price-low-high") {
-                    cards.sort(function (a, b) {
-                        return parseInt(a.getAttribute("data-price")) -
-                               parseInt(b.getAttribute("data-price"));
-                    });
-                }
-                else if (v === "price-high-low") {
-                    cards.sort(function (a, b) {
-                        return parseInt(b.getAttribute("data-price")) -
-                               parseInt(a.getAttribute("data-price"));
-                    });
-                }
-                else if (v === "name-az") {
-                    cards.sort(function (a, b) {
-                        var A = a.getAttribute("data-name").toLowerCase();
-                        var B = b.getAttribute("data-name").toLowerCase();
-                        if (A < B) return -1;
-                        if (A > B) return 1;
-                        return 0;
-                    });
-                }
-                else if (v === "name-za") {
-                    cards.sort(function (a, b) {
-                        var A = a.getAttribute("data-name").toLowerCase();
-                        var B = b.getAttribute("data-name").toLowerCase();
-                        if (A > B) return -1;
-                        if (A < B) return 1;
-                        return 0;
-                    });
+                    cards.sort((a, b) => a.dataset.price - b.dataset.price);
+                } else if (v === "price-high-low") {
+                    cards.sort((a, b) => b.dataset.price - a.dataset.price);
+                } else if (v === "name-az") {
+                    cards.sort((a, b) =>
+                        a.dataset.name.localeCompare(b.dataset.name)
+                    );
+                } else if (v === "name-za") {
+                    cards.sort((a, b) =>
+                        b.dataset.name.localeCompare(a.dataset.name)
+                    );
                 }
 
                 render(cards, grid);
             };
         }
 
-        // ---------------------------
-        // Search (basic DOM only)
-        // ---------------------------
-        var searchInput = document.getElementById("service-search");
+        /* SEARCH */
+        const searchInput = document.getElementById("service-search");
 
         if (searchInput) {
-
             searchInput.onkeyup = function () {
-                var text = searchInput.value.toLowerCase();
+                const text = searchInput.value.toLowerCase();
 
-                for (var i = 0; i < cards.length; i++) {
+                cards.forEach(card => {
+                    const name = card.dataset.name.toLowerCase();
+                    const desc = card.querySelector(".desc").textContent.toLowerCase();
 
-                    var name = cards[i].getAttribute("data-name").toLowerCase();
-
-                    var desc = "";
-                    var descEl = cards[i].getElementsByClassName("desc")[0];
-                    if (descEl) desc = descEl.textContent.toLowerCase();
-
-                    if (name.indexOf(text) !== -1 || desc.indexOf(text) !== -1) {
-                        cards[i].style.display = "";
+                    if (name.includes(text) || desc.includes(text)) {
+                        card.style.display = "";
                     } else {
-                        cards[i].style.display = "none";
+                        card.style.display = "none";
                     }
-                }
+                });
             };
         }
     }
-};
+}; // END window.onload
 
 
 
-// =======================================================
-// Helper 1 — Shuffle (Arrays)
+/* =======================================================
+   SHARED FUNCTIONS
+   ======================================================= */
 function shuffle(arr) {
-    for (var i = arr.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
+    for (let i = arr.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
     }
 }
 
-
-
-// =======================================================
-// Helper 2 — Render cards into the grid
 function render(cards, grid) {
     grid.innerHTML = "";
-    for (var i = 0; i < cards.length; i++) {
-        grid.appendChild(cards[i]);
-    }
+    cards.forEach(c => grid.appendChild(c));
 }
 
+
+
+/* =======================================================
+   DOMContentLoaded (Favorites, Dark Theme, Forms)
+   ======================================================= */
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* -------------------------
+       1) DARK MODE
+       ------------------------- */
+    const toggle = document.getElementById("themeToggle");
+    let savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+        document.body.classList.add("theme-dark");
+        if (toggle) toggle.checked = true;
+    }
+
+    if (toggle) {
+        toggle.addEventListener("change", () => {
+            if (toggle.checked) {
+                document.body.classList.add("theme-dark");
+                localStorage.setItem("theme", "dark");
+            } else {
+                document.body.classList.remove("theme-dark");
+                localStorage.setItem("theme", "light");
+            }
+        });
+    }
+
+
+
+    /* -------------------------
+       2) FAVORITES SYSTEM
+       ------------------------- */
+    const favButtons = document.querySelectorAll(".fav");
+
+    if (favButtons.length > 0) {
+
+        let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+        let favNames = favorites.map(f => f.name);
+
+        favButtons.forEach(btn => {
+            let card = btn.closest(".service-card");
+            let name = card.dataset.name;
+
+            if (favNames.includes(name)) {
+                btn.classList.add("fav-active");
+                btn.textContent = "❤️";
+            }
+
+            btn.addEventListener("click", function () {
+
+                let price = card.dataset.price;
+                let desc = card.querySelector(".desc").textContent;
+                let imgSrc = card.querySelector("img").src.split("images/")[1];
+
+                if (favNames.includes(name)) {
+
+                    favorites = favorites.filter(f => f.name !== name);
+                    favNames = favNames.filter(n => n !== name);
+
+                    btn.classList.remove("fav-active");
+                    btn.textContent = "♡";
+                    alert("Removed from favorites");
+
+                } else {
+
+                    favorites.push({ name, price, desc, img: imgSrc });
+                    favNames.push(name);
+
+                    btn.classList.add("fav-active");
+                    btn.textContent = "❤️";
+                    alert("Added to favorites");
+                }
+
+                localStorage.setItem("favorites", JSON.stringify(favorites));
+            });
+        });
+    }
+
+    /* LOAD ON CUSTOMER PAGE */
+    const favContainer = document.getElementById("favGrid");
+
+    if (favContainer) {
+        let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+
+        favContainer.innerHTML = "";
+
+        favs.forEach(item => {
+            let card = document.createElement("div");
+            card.className = "favorite-card";
+
+            card.innerHTML = `
+                <img src="images/${item.img}" alt="${item.name}">
+                <h3>${item.name}</h3>
+                <p><strong>${item.price}</strong> $</p>
+                <p>${item.desc}</p>
+            `;
+
+            favContainer.appendChild(card);
+        });
+    }
+
+
+
+    /* -------------------------
+       3) REQUEST SERVICE
+       ------------------------- */
+
+    const requestForm = document.querySelector(".request-form");
+
+    if (requestForm) {
+
+        const service = document.getElementById("service");
+        const name = document.getElementById("name");
+        const date = document.getElementById("date");
+        const desc = document.getElementById("desc");
+
+        let addedRequests = [];
+
+        requestForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            if (service.value === "Select Service:") {
+                alert("Please select a service.");
+                return;
+            }
+
+            if (!/^[A-Za-z]+\s[A-Za-z]+$/.test(name.value.trim())) {
+                alert("Full name must be first + last.");
+                return;
+            }
+
+            const today = new Date();
+            const selected = new Date(date.value);
+
+            if (isNaN(selected.getTime()) || selected - today < 3 * 86400000) {
+                alert("Due date must be at least 3 days from today.");
+                return;
+            }
+
+            if (desc.value.trim().length < 100) {
+                alert("Description must be at least 100 characters.");
+                return;
+            }
+
+            const goDashboard = !confirm("Request sent!\nOK = Stay\nCancel = Dashboard");
+
+            if (goDashboard) {
+                window.location.href = "customer.html";
+                return;
+            }
+
+            addedRequests.push({
+                service: service.value,
+                name: name.value,
+                date: date.value,
+                desc: desc.value.trim(),
+            });
+
+            showRequests();
+            requestForm.reset();
+        });
+
+        function showRequests() {
+            let box = document.getElementById("added-requests");
+
+            if (!box) {
+                box = document.createElement("div");
+                box.id = "added-requests";
+                box.innerHTML = "<h3>Added Requests:</h3>";
+                document.querySelector(".form-box").appendChild(box);
+            }
+
+            box.innerHTML = "<h3>Added Requests:</h3>";
+
+            addedRequests.forEach(req => {
+                let c = document.createElement("div");
+                c.className = "req-card";
+
+                c.innerHTML = `
+                    <p><strong>Service:</strong> ${req.service}</p>
+                    <p><strong>Name:</strong> ${req.name}</p>
+                    <p><strong>Due Date:</strong> ${req.date}</p>
+                    <p><strong>Description:</strong> ${req.desc}</p>
+                `;
+                box.appendChild(c);
+            });
+        }
+    }
+
+
+
+    /* -------------------------
+       4) EVALUATE SERVICE
+       ------------------------- */
+    const evaluateForm = document.querySelector(".evaluate-form");
+
+    if (evaluateForm) {
+
+        const serviceEval = document.getElementById("select-service");
+        const feedback = document.getElementById("feedback");
+
+        evaluateForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            if (serviceEval.value === "Select Service:") {
+                alert("Please select a service.");
+                return;
+            }
+
+            let rating = document.querySelector("input[name='rating']:checked");
+            if (!rating) {
+                alert("Please choose a rating.");
+                return;
+            }
+
+            if (feedback.value.trim().length < 5) {
+                alert("Please write feedback.");
+                return;
+            }
+
+            if (Number(rating.value) >= 4) {
+                alert("Thank you for your positive review!");
+            } else {
+                alert("We apologize for the inconvenience.");
+            }
+
+            window.location.href = "customer.html";
+        });
+    }
+
+}); // END DOMContentLoaded

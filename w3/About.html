@@ -116,7 +116,9 @@
    width:85%;
     margin:50px auto;
      padding:30px;
-   box-shadow:0 3px 10px rgba(0,0,0,0.05);">
+   box-shadow:0 3px 10px rgba(0,0,0,0.05);"
+   
+   >
 
   <div class="form-box" style="padding:60px; width:900px;">
     <h2>Join Our Team</h2>
@@ -141,8 +143,14 @@
 
  <label for="skills">Skills *</label>
 <input id="skills" type="text" placeholder="e.g. Hair Styling, Customer Service" required>
-  <label for="experties">Area of Expertise *</label>
-  <input id="experties" type="text" placeholder="e.g. Hair Curling, Massage Therapy, Nail Art" required>
+<label for="expertise">Area of Expertise *</label>
+<select id="expertise" required>
+ <option value="">Select…</option>
+   <option>Hair Care</option>
+ <option>Nail Care</option>
+ <option>Massage &amp; Body Care</option>
+
+      </select>
 
 <div class="photo-upload">
   <label for="upload-photo" class="photo-box">photo of you 📷</label>
@@ -174,5 +182,6 @@
 <p>© Bright Spa All rights reserved.</p>
 </div>
 </footer>
+  <script src="script.js"></script>
 </body>
 </html>

@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Manage Team Members</title>
 <link rel="stylesheet" href="style.css" />
-</head>
 <body>
 <!-- ========== Header ========== -->
   <header>
@@ -20,7 +19,7 @@
         <li><a href="about.html">About Us</a></li>
         <li><a href="services.html">Services</a></li>
         <li><a href="customer.html">Customer</a></li>
-        <li><a href="Provider.html" class="active" >Provider</a></li>
+        <li><a href="Provider.html"class="active" >Provider</a></li>
       </ul>
     </nav>
   </header>
@@ -34,6 +33,9 @@
       <li aria-current="page">Manage Team</li>
 </ol>
   </nav>
+
+  
+<main>
 
   <main class="page-wrap">
   <!-- Section 1: Manage existing staff-->
@@ -126,7 +128,13 @@
   width: 85%;
   margin: 50px auto;
   padding: 30px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.05);">
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);"
+  
+ 
+  background-color: #5a433d !important;
+  color: #f8f1ec !important;
+  border-color: #d0b4a8 !important;
+>
 
     <div class="form-box" style="padding: 60px; width: 900px;">
     <h2>Add Staff Member</h2>
@@ -152,11 +160,11 @@
     <label for="education">Education:</label>
     <input id="education" type="text" name="education">
 
-<label for="expertise">Area of expertise:</label>
-<textarea id="expertise" name="expertise" rows="3" placeholder="Write here..."></textarea>
+   <label for="expertise">Area of expertise:</label>
+   <textarea id="expertise" name="expertise" rows="3" >Write here...</textarea>
 
-<label for="skills">Skills:</label>
-<textarea id="skills" name="skills" rows="3" placeholder="Write here..."></textarea>
+    <label for="skills">Skills:</label>
+    <textarea id="skills" name="skills" rows="3">Write here...</textarea>
      <input type="button" value="cancel">
    <input  type="submit"  value=Add>
 
@@ -188,5 +196,6 @@
     <p>© Bright Spa All rights reserved.</p>
   </div>
 </footer>
+  <script src="script.js"></script>
 </body>
 </html>

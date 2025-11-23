@@ -360,8 +360,7 @@ function validateJoinForm() {
     var exp    = document.getElementById("experties").value;
     var photo  = document.getElementById("upload-photo").value;
 
-    //  No empty fields
-    //  No empty fields (one by one)
+    //  No empty fields one by one
 if (first == "") {
     alert("Please fill the First Name field.");
     return false;
@@ -438,4 +437,5 @@ if (photo == "") {
 function clearJoinForm() {
     document.getElementById("join-us-form").reset();
 }
+
 

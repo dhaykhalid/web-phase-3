@@ -361,12 +361,46 @@ function validateJoinForm() {
     var photo  = document.getElementById("upload-photo").value;
 
     //  No empty fields
-    if (first == "" || last == "" || dob == "" || email == "" ||
-        edu == "" || skills == "" || exp == "" || photo == "") {
+    //  No empty fields (one by one)
+if (first == "") {
+    alert("Please fill the First Name field.");
+    return false;
+}
 
-        alert("Please fill in all required fields.");
-        return false;
-    }
+if (last == "") {
+    alert("Please fill the Last Name field.");
+    return false;
+}
+
+if (dob == "") {
+    alert("Please fill the Date of Birth field.");
+    return false;
+}
+
+if (email == "") {
+    alert("Please fill the Email field.");
+    return false;
+}
+
+if (edu == "") {
+    alert("Please fill the Education field.");
+    return false;
+}
+
+if (skills == "") {
+    alert("Please fill the Skills field.");
+    return false;
+}
+
+if (exp == "") {
+    alert("Please fill the Expertise field.");
+    return false;
+}
+
+if (photo == "") {
+    alert("Please upload a Photo.");
+    return false;
+}
 
     // name cannot start with number
     if (/^[0-9]/.test(first) || /^[0-9]/.test(last)) {
@@ -404,3 +438,4 @@ function validateJoinForm() {
 function clearJoinForm() {
     document.getElementById("join-us-form").reset();
 }
+

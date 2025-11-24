@@ -438,4 +438,308 @@ function clearJoinForm() {
     document.getElementById("join-us-form").reset();
 }
 
+/*PROVIDER DASHBOARD - Part 6 */
+  
+document.addEventListener("DOMContentLoaded", function() {
+    const providerDashboard = document.querySelector(".AllServices-container");
+    
+    if (providerDashboard) {
+        loadProviderServices();
+    }
+
+    function loadProviderServices() {
+        const serviceList = document.querySelector(".service-list");
+        if (!serviceList) return;
+
+        const storedServices = JSON.parse(localStorage.getItem("providerServices") || "[]");
+        serviceList.innerHTML = "";
+
+        if (storedServices.length === 0) {
+            serviceList.innerHTML = '<p style="text-align:center; color:#666; padding:40px;">No services added yet. <a href="addService.html">Add your first service</a></p>';
+            return;
+        }
+
+        storedServices.forEach(service => {
+            const serviceCard = document.createElement("div");
+            serviceCard.className = "service-card-Provider";
+            
+            serviceCard.innerHTML = `
+                <img src="${service.imageData}" alt="${service.name}" style="width:100%; height:180px; object-fit:cover; border-radius:10px;">
+                <p><strong>Service:</strong> ${service.name}</p>
+                <p><strong>Price:</strong> ${service.price}</p>
+                <p>${service.description}</p>
+            `;
+            serviceList.appendChild(serviceCard);
+        });
+    }
+});
+
+/* ADD NEW SERVICE Part 7 */
+document.addEventListener("DOMContentLoaded", function() {
+    const addServiceForm = document.querySelector(".AddService-container form");
+    
+    if (addServiceForm) {
+        addServiceForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            if (validateAddServiceForm()) {
+                // Convert the chosen image to base64
+                const photoInput = document.getElementById("upload-photo");
+                const file = photoInput.files[0];
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    addServiceToStorage(e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    function validateAddServiceForm() {
+        const serviceName = document.getElementById("service-name").value.trim();
+        const price = document.getElementById("price").value.trim();
+        const description = document.getElementById("description").value.trim();
+        const photoInput = document.getElementById("upload-photo");
+
+        if (!serviceName) {
+            alert("Service name field is empty.");
+            return false;
+        }
+        if (!price) {
+            alert("Price field is empty.");
+            return false;
+        }
+        if (!description || description === "Write here...") {
+            alert("Please write a proper description.");
+            return false;
+        }
+        if (!photoInput.files || photoInput.files.length === 0) {
+            alert("Please upload a service photo.");
+            return false;
+        }
+        if (/^\d/.test(serviceName)) {
+            alert("Service name cannot start with numbers.");
+            return false;
+        }
+        if (!/^\d+(\.\d{1,2})?$/.test(price)) {
+            alert("Price must be a valid number.");
+            return false;
+        }
+
+        return true;
+    }
+
+    function addServiceToStorage(imageData) {
+        const serviceName = document.getElementById("service-name").value.trim();
+        const price = document.getElementById("price").value.trim();
+        const description = document.getElementById("description").value.trim();
+
+        const existingServices = JSON.parse(localStorage.getItem("providerServices") || "[]");
+        
+        const newService = {
+            id: Date.now(),
+            name: serviceName,
+            price: price + " $",
+            description: description,
+            imageData: imageData // Store the ACTUAL image you chose
+        };
+
+        existingServices.push(newService);
+        localStorage.setItem("providerServices", JSON.stringify(existingServices));
+        
+        alert(`Service "${serviceName}" has been added successfully!`);
+        addServiceForm.reset();
+        
+        if (confirm("Go back to Dashboard?")) {
+            window.location.href = "Provider.html";
+        }
+    }
+
+});
+	function cancelAddService() {
+    if (confirm("Are you sure you want to cancel? Any unsaved changes will be lost.")) {
+        window.location.href = "Provider.html";
+    }
+}
+
+
+/* MANAGE TEAM MEMBERS Part 8 */
+document.addEventListener("DOMContentLoaded", function() {
+    console.log(" Page loaded");
+    
+    const manageTeamPage = document.querySelector(".ManageStaff-container");
+    
+    if (manageTeamPage) {
+        initializeTeamManagement();
+    }
+
+    function initializeTeamManagement() {
+        console.log("Initializing buttons...");
+        
+        // Delete 
+        const deleteBtn = document.querySelector('input.danger-btn[value="Delete"]');
+        console.log("Delete button:", deleteBtn);
+        
+        if (deleteBtn) {
+            deleteBtn.addEventListener("click", function(e) {
+                console.log("Delete clicked");
+                handleDeleteMembers();
+            });
+        }
+
+        // Add new member 
+        const addButton = document.querySelector('.ManageStaff-seq input[value="Add"]');
+        console.log("Add button:", addButton);
+        
+        if (addButton) {
+            addButton.addEventListener("click", function(e) {
+                console.log(" Add clicked");
+                e.preventDefault();
+                handleAddNewMember();
+            });
+        }
+
+        // Cancel button
+        const cancelBtn = document.querySelector('.ManageStaff-seq input[value="cancel"]');
+        console.log("Cancel button:", cancelBtn);
+        
+        if (cancelBtn) {
+            cancelBtn.addEventListener("click", function(e) {
+                console.log("Cancel clicked");
+                e.preventDefault();
+                if (confirm("Are you sure you want to cancel?")) {
+                    document.querySelector(".ManageStaff-seq form").reset();
+                }
+            });
+        }
+    }
+
+    function handleDeleteMembers() {
+        console.log("Deleting members...");
+        const selectedCheckboxes = document.querySelectorAll('.staff-check:checked');
+        console.log("Selected:", selectedCheckboxes.length);
+        
+        if (selectedCheckboxes.length === 0) {
+            alert("Please select at least one offer");
+            return;
+        }
+
+        if (confirm(`Delete ${selectedCheckboxes.length} member(s)?`)) {
+            selectedCheckboxes.forEach(checkbox => {
+                const staffCard = checkbox.closest('.staff-card');
+                if (staffCard) {
+                    staffCard.remove();
+                }
+            });
+            alert("Members deleted successfully.");
+        }
+    }
+
+    function handleAddNewMember() {
+        console.log("Adding new member...");
+        
+        // Get form values
+        const fullName = document.getElementById("full-name");
+        const dob = document.getElementById("dob");
+        const email = document.getElementById("email");
+        const education = document.getElementById("education");
+        const expertise = document.getElementById("expertise");
+        const skills = document.getElementById("skills");
+        const photoInput = document.getElementById("upload-photo");
+
+        // Check if elements exist
+        if (!fullName || !dob || !email || !education || !expertise || !skills || !photoInput) {
+            alert("Error: Form elements not found");
+            return;
+        }
+
+        const fullNameValue = fullName.value.trim();
+        const dobValue = dob.value;
+        const emailValue = email.value.trim();
+        const educationValue = education.value.trim();
+        const expertiseValue = expertise.value.trim();
+        const skillsValue = skills.value.trim();
+
+        console.log("Values:", {fullNameValue, emailValue});
+
+        // VALIDATION 1: Check for empty fields
+        if (!fullNameValue) {
+            alert("Please fill in Full Name field.");
+            return;
+        }
+        if (!dobValue) {
+            alert("Please select Date of Birth.");
+            return;
+        }
+        if (!emailValue) {
+            alert("Please fill in Email field.");
+            return;
+        }
+        if (!educationValue) {
+            alert("Please fill in Education field.");
+            return;
+        }
+        if (!expertiseValue) {
+            alert("Please fill in Area of expertise field.");
+            return;
+        }
+        if (!skillsValue) {
+            alert("Please fill in Skills field.");
+            return;
+        }
+
+       
+
+        // VALIDATION 2: Check photo
+        if (!photoInput.files || photoInput.files.length === 0) {
+            alert("Please upload a staff photo.");
+            return;
+        }
+
+        // VALIDATION 3 : Name is letters only 
+        if (!/^[A-Za-z\s]+$/.test(fullNameValue)) {
+            alert("Full name should contain only letters and spaces.");
+            return;
+        }
+
+
+// VALIDATION 4 email some browser 
+if (!email.checkValidity()) {
+    email.reportValidity();
+    return;
+}
+
+        console.log(" All validations passed");
+
+        // Handle photo
+        let photoUrl = "images/staff1.PNG";
+        if (photoInput.files.length > 0) {
+            const file = photoInput.files[0];
+            photoUrl = URL.createObjectURL(file);
+        }
+
+        // Add to staff list
+        const staffList = document.querySelector(".staff-list");
+        const newStaffId = Date.now();
+
+        const newStaffCard = document.createElement("label");
+        newStaffCard.className = "staff-card";
+        newStaffCard.innerHTML = `
+            <div class="staff-left">
+                <div class="photo-thumb">
+                    <img src="${photoUrl}" class="photo-img" alt="${fullNameValue}">
+                </div>
+                <div class="staff-name">${fullNameValue}</div>
+            </div>
+            <input type="checkbox" name="staff${newStaffId}" value="${newStaffId}" class="staff-check">
+        `;
+
+        staffList.insertBefore(newStaffCard, staffList.firstChild);
+        alert(`Team member "${fullNameValue}" added successfully!`);
+        document.querySelector(".ManageStaff-seq form").reset();
+        
+        return true;
+    }
+});
 

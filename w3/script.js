@@ -742,4 +742,3 @@ if (!email.checkValidity()) {
         return true;
     }
 });
-

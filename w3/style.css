@@ -1026,6 +1026,7 @@ body.theme-dark .star-rating label:hover ~ label{
 /* الأزرار */
 
 body.theme-dark input[type="submit"],
+body.theme-dark input[type="reset"],
 body.theme-dark input[type="button"],
 body.theme-dark .button {
   background-color: #d0b4a8 !important;
@@ -1069,3 +1070,4 @@ body.theme-dark .breadcrumb li {
     line-height: 1.5;
 
 }
+

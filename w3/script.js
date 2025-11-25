@@ -434,9 +434,9 @@ if (photo == "") {
 }
 
 // To cancel the form submisiion
-function clearJoinForm() {
-    document.getElementById("join-us-form").reset();
-}
+//function clearJoinForm() {
+   // document.getElementById("join-us-form").reset();
+//}
 
 /*PROVIDER DASHBOARD - Part 6 */
   
@@ -742,3 +742,4 @@ if (!email.checkValidity()) {
         return true;
     }
 });
+
